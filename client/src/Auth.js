@@ -18,13 +18,22 @@ class Auth extends Component{
     this.handleLogout = this.handleLogout.bind(this);
   }
 
+  componentWillReceiveProps = (nextProps) => {
+    console.log(nextProps);
+    if(nextProps.logoutMethod === true){
+      console.log(this.nextProps);
+      alert("GOT EEM");
+    }
+  }
+
   handleUsername(event) {
      this.setState({username: event.target.value});
    }
    handlePassword(event) {
     this.setState({password: event.target.value});
   }
-  handleLogout(){
+  handleLogout(event){
+    alert("parent called me");
     this.setState({loggedIn:false});
   }
   modalCloser = () => {
@@ -44,7 +53,6 @@ class Auth extends Component{
       self.setState({loggedIn: response.data});
       if(response.data==false){alert("Incorrect Username or Password. Please try again, Jabroni!")}
       else{
-        console.log(self.state.loggedIn);
         self.modalCloser();
       }
        //alert("Logged In");

@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import Auth from './Auth';
 
@@ -20,17 +19,25 @@ Modal.setAppElement('#root')
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.child = React.createRef();
+
     this.state = {
-      modalIsOpen: true
+      modalIsOpen: true,
+      isLoggedIn: false,
+      valueString : "HELLO",
+      shouldLogout: false
     };
 
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.logOut = this.logOut.bind(this);
   }
-
+  componentWillReceiveProps = (nextProps) => {
+    if(nextProps.logmeout === true){
+      this.setState({
+        shouldLogout: true
+      });
+    }
+  }
 
   openModal() {
     this.setState({modalIsOpen: true});
@@ -44,10 +51,6 @@ class App extends React.Component {
   closeModal() {
     this.setState({modalIsOpen: false});
   }
-  logOut(){
-    console.log("hello");
-    this.refs.logoutReference.handleLogout();
-    }
 
   render() {
     return (
@@ -59,9 +62,10 @@ class App extends React.Component {
           contentLabel="Login Modal"
         >
 
-        <Auth parentMethod={this.closeModal} ref="logoutReference"  />
+        <Auth logoutMethod={this.state.shouldLogout} parentMethod={this.closeModal} ref="auth"/>
         </Modal>
-        <button onClick={this.logOut}>Logout</button>
+        <button onClick={this.handleLogout}>Logout</button>
+        <div>alkjhsdfl;jasdlkfj;alskdkfj;aaskljdf;alsdkjf;alsdjfl;kasjdfl;aksjdf;lkajsdf;lkajsdf;lkj {String(this.state.shouldLogout)}</div>
       </div>
     );
   }

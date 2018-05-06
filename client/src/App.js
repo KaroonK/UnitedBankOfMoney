@@ -29,14 +29,15 @@ var whiteColor = { "White": "#ffffff" };
 class App extends Component {
   constructor(props){
     super(props);
-    this.child = React.createRef();
+    this.state=({
+      logoutNow: false
+    });
   }
 
-  onClick=()=> {
-    this.child.current.closeModal();
-  }
   logOut = () => {
-    this.child.current.logOut();
+    this.setState({
+      logoutNow: true
+    });
   }
 
   render() {
@@ -48,7 +49,9 @@ class App extends Component {
             const url = '/' + selected;
             if(selected == "logout"){
               this.logOut();
-            } else {this.props.history.push(url);}
+            } else {
+              this.props.history.push(url);
+            }
           }}
         >
         <SideNav.Toggle/>
@@ -127,7 +130,7 @@ class App extends Component {
           </NavItem>
           </SideNav.Nav>
           </SideNav>
-          <Authentication ref={this.child}/>
+          <Authentication logmeout={this.state.logoutNow} parentMethod={this.logOut} />
       <Switch>
         <Route exact path="/" component={Home}/>
         <Route path="/test" component={Test}/>
