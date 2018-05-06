@@ -11,15 +11,18 @@ var connection = mysql.createConnection({
 router.post('/login', function(req, res, next) {
   var userd = req.body.userid;
   var pass = req.body.pass;
+
   connection.query("SELECT Password FROM loginEmployee WHERE Emp_Num=" + userd, function (err, result,fields){
   if (err) throw err;
-  if(pass == result[0].Password){
-    res.send(true);
-  }else{
-    res.send(false);
-  }
+  console.log(result);
+  if(result.length !== 0){
+    if(pass == result[0].Password){
+      res.send(true);
+    }else {
+      res.send(false);
+    }
+  }else{res.send(false);}
   })
-
 });
 
 module.exports = router;

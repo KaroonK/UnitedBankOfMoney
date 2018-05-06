@@ -20,17 +20,35 @@ import branchImg from './images/branch.png';
 import loansImg from './images/loans.png';
 import insImg from './images/investment.png';
 import colImg from './images/collect.png';
+import logOut from './images/logOut.png';
+import Auth from './Auth';
+import Authentication from './Authentication';
+import {closeModal} from './Authentication';
 var whiteColor = { "White": "#ffffff" };
 
 class App extends Component {
+  constructor(props){
+    super(props);
+    this.child = React.createRef();
+  }
+
+  onClick=()=> {
+    this.child.current.closeModal();
+  }
+  logOut = () => {
+    this.child.current.logOut();
+  }
 
   render() {
 
     return (
+
       <div>
         <SideNav onSelect={(selected) => {
             const url = '/' + selected;
-            this.props.history.push(url);
+            if(selected == "logout"){
+              this.logOut();
+            } else {this.props.history.push(url);}
           }}
         >
         <SideNav.Toggle/>
@@ -99,9 +117,17 @@ class App extends Component {
                 Collections
                 </NavText>
           </NavItem>
-  </SideNav.Nav>
-
-  </SideNav>
+          <NavItem eventKey="logout" >
+              <NavIcon>
+                <img src={logOut} height="30" width="30" ></img>
+              </NavIcon>
+              <NavText>
+                Logout
+              </NavText>
+          </NavItem>
+          </SideNav.Nav>
+          </SideNav>
+          <Authentication ref={this.child}/>
       <Switch>
         <Route exact path="/" component={Home}/>
         <Route path="/test" component={Test}/>
@@ -112,9 +138,8 @@ class App extends Component {
         <Route path="/loans" component={Loans}/>
         <Route path="/investments" component={Investments}/>
         <Route path="/collections" component={Collections}/>
-      </Switch>
-
-    </div>
+        </Switch>
+      </div>
     );
   }
 }
