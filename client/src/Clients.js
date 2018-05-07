@@ -4,9 +4,10 @@ class Clients extends Component {
 
 
   render() {
+    var username = sessionStorage.getItem('username');
     return (
       <div className ="card container-fluid ">
-      Clients
+      Clients {username}
       </div>
     );
   }

@@ -13,6 +13,7 @@ import Investments from './Investments';
 import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import './styles/icons.css';
+import './styles/App.css';
 import homeImg from './images/home.png';
 import clientsImg from './images/clients.png';
 import accImg from './images/accounts.png';
@@ -28,14 +29,18 @@ import Authentication from './Authentication';
   class App extends Component{
     constructor(props){
       super(props);
+      this.state = {
+        username: '',
+      };
     }
     AuthService = {
       isAuthenticated:false,
       authentication(){
-        this.isAuthenticated=true
+        this.isAuthenticated=true;
       },
       logout(){
-        this.isAuthenticated = false
+        this.isAuthenticated = false;
+        sessionStorage.removeItem('username');
       }
     }
     SecretRoute = ({ component: Component, ...rest }) => (
@@ -43,14 +48,15 @@ import Authentication from './Authentication';
         this.AuthService.isAuthenticated === true
           ? <Component {...props} />
           // : <Redirect to='/authentication' />
-          :<Authentication logState={this.AuthService}/>
+          :<Authentication logState={this.AuthService} />
+
       )} />
     );
   render() {
+    var data = sessionStorage.getItem('username');
     var self=this;
     return (
       <div>
-
 
         <SideNav onSelect={(selected) => {
             const url = "/" + selected;
@@ -64,30 +70,30 @@ import Authentication from './Authentication';
         }
         >
         <SideNav.Toggle/>
-        <SideNav.Nav >
-          <NavItem eventKey="home">
+          <SideNav.Nav >
+            <NavItem eventKey="">
               <NavIcon>
-                  <img src={homeImg} height="30" width="30" ></img>
+                <img src={homeImg} height="30" width="30" ></img>
               </NavIcon>
               <NavText>
                 Home
-                </NavText>
-          </NavItem>
-          <NavItem eventKey="clients">
-              <NavIcon>
-                  <img src={clientsImg} height="30" width="30" ></img>
-              </NavIcon>
-              <NavText>
-                Clients
               </NavText>
           </NavItem>
+          <NavItem eventKey="clients">
+            <NavIcon>
+                <img src={clientsImg} height="30" width="30" ></img>
+            </NavIcon>
+            <NavText>
+              Clients
+            </NavText>
+          </NavItem>
           <NavItem eventKey="accounts">
-              <NavIcon>
-                  <img src={accImg} height="30" width="30" ></img>
-              </NavIcon>
-              <NavText>
-                Accounts
-                </NavText>
+            <NavIcon>
+                <img src={accImg} height="30" width="30" ></img>
+            </NavIcon>
+            <NavText>
+              Accounts
+            </NavText>
           </NavItem>
           <NavItem eventKey="employees">
               <NavIcon>
@@ -139,6 +145,7 @@ import Authentication from './Authentication';
           </NavItem>
           </SideNav.Nav>
           </SideNav>
+          <div className="padLeft">
           <Switch>
             <Route path="/authentication" component={Authentication}/>
             <this.SecretRoute exact path="/" component={Home}/>
@@ -151,8 +158,8 @@ import Authentication from './Authentication';
             <this.SecretRoute path="/investments" component={Investments}/>
             <this.SecretRoute path="/collections" component={Collections}/>
             </Switch>
+          </div>
         </div>
-      // <Authentication logmeout={this.state.loggedIn}/>
     );
   }
 }

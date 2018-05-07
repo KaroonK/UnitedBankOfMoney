@@ -5,6 +5,8 @@ import {Router, Route} from 'react-router';
 import axios from 'axios';
 import App from './App';
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import './styles/Authentication.css';
+import logo from './images/logo.PNG';
 
 class Authentication extends React.Component {
   constructor(props){
@@ -39,7 +41,8 @@ class Authentication extends React.Component {
       if(response.data==false){alert("Incorrect Username or Password. Please try again, Jabroni!")}
       else{
         alert("Logged In");
-        console.log(self.props);
+        self.forceUpdate();
+        sessionStorage.setItem('username', self.state.username);
         self.props.logState.authentication();
       }
     })
@@ -51,18 +54,20 @@ class Authentication extends React.Component {
 
   render() {
     return(
-    <div>
-      <form onSubmit={this.handleSubmit}>
+    <div className='login-Page'>
+
+      <div className='form'>
+      <img src={logo} width="100%" height="100%" className="logoClass"/>
+      <form onSubmit={this.handleSubmit} className='login-form' >
         <label>
-          UserID:
-          <input type="number" value={this.state.username} onChange={this.handleUserChange}/>
+          <input type="number" value={this.state.username} onChange={this.handleUserChange} placeholder="User ID"/>
         </label>
         <label>
-          Password:
-          <input type="password" value={this.state.password} onChange={this.handlePassChange}/>
+          <input type="password" value={this.state.password} onChange={this.handlePassChange} placeholder="Password"/>
         </label>
-        <button type="submit" className="btn btn-success btn-lg">Login</button>
+        <button type="submit"> Login</button>
       </form>
+      </div>
     </div>
   );
 }
