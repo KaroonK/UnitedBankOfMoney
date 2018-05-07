@@ -25,16 +25,17 @@ import colImg from './images/collect.png';
 import logOut from './images/logOut.png';
 import Authentication from './Authentication';
 
-
   class App extends Component{
+
     constructor(props){
       super(props);
       this.state = {
         username: '',
+        isLoggedIn: false
       };
     }
     AuthService = {
-      isAuthenticated:false,
+      isAuthenticated:true,
       authentication(){
         this.isAuthenticated=true;
       },
@@ -140,7 +141,7 @@ import Authentication from './Authentication';
                 <img src={logOut} height="30" width="30" ></img>
               </NavIcon>
               <NavText>
-                Logout
+                Logout {data}
               </NavText>
           </NavItem>
           </SideNav.Nav>

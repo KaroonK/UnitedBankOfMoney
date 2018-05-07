@@ -43,6 +43,7 @@ class Authentication extends React.Component {
         alert("Logged In");
         self.forceUpdate();
         sessionStorage.setItem('username', self.state.username);
+        sessionStorage.setItem('isLogged', self.state.loggedIn);
         self.props.logState.authentication();
       }
     })
