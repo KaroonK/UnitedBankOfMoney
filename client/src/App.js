@@ -35,7 +35,7 @@ import Authentication from './Authentication';
       };
     }
     AuthService = {
-      isAuthenticated:true,
+      isAuthenticated:false,
       authentication(){
         this.isAuthenticated=true;
       },
