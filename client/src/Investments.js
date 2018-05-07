@@ -5,8 +5,31 @@ import {
     AccordionItemTitle,
     AccordionItemBody,
 } from 'react-accessible-accordion';
-class Investments extends Component {
+import axios from 'axios';
+const JsonTable = require('ts-react-json-table');
 
+class Investments extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      username: '',
+      isLoggedIn: false,
+      list: []
+    };
+    this.viewInvestments = this.viewInvestments.bind(this);
+  }
+  viewInvestments(){
+    var self = this;
+    axios.get(' /investments/viewInvestments').then(function (result){
+      self.setState({list:result});
+      console.log(self.state.list.data);
+      }
+    );
+
+  }
+  showInvest(){
+    console.log(this.state.list.data);
+  }
 
   render() {
     var username = sessionStorage.getItem('username');
@@ -14,12 +37,12 @@ class Investments extends Component {
       <div className ="card container-fluid ">
         Investments
         <Accordion>
-          <AccordionItem>
-              <AccordionItemTitle>
-                <h4>Simple title</h4>
+          <AccordionItem onClick={this.viewInvestments}>
+              <AccordionItemTitle >
+                <h4>Show Investments</h4>
               </AccordionItemTitle>
               <AccordionItemBody>
-                <p>Body content</p>
+                <JsonTable rows={this.state.list.data}/>
               </AccordionItemBody>
           </AccordionItem>
           <AccordionItem>

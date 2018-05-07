@@ -14,7 +14,8 @@ class Authentication extends React.Component {
     this.state = {
       username: '',
       password: '',
-      isAuthenticated: false
+      isAuthenticated: false,
+      formVisible: 'visible'
     };
     this.handleUserChange = this.handleUserChange.bind(this);
     this.handlePassChange = this.handlePassChange.bind(this);
@@ -42,6 +43,7 @@ class Authentication extends React.Component {
       else{
         alert("Logged In");
         self.forceUpdate();
+        self.setState({formVisible: 'hidden'});
         sessionStorage.setItem('username', self.state.username);
         sessionStorage.setItem('isLogged', self.state.loggedIn);
         self.props.logState.authentication();
@@ -56,8 +58,7 @@ class Authentication extends React.Component {
   render() {
     return(
     <div className='login-Page'>
-
-      <div className='form'>
+      <div style={{visibility:this.state.formVisible}} className='form'>
       <img src={logo} width="100%" height="100%" className="logoClass"/>
       <form onSubmit={this.handleSubmit} className='login-form' >
         <label>
