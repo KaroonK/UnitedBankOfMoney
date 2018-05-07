@@ -18,11 +18,15 @@ class Auth extends Component{
     this.handleLogout = this.handleLogout.bind(this);
   }
 
-  componentWillReceiveProps = (nextProps) => {
-    console.log(nextProps);
-    if(nextProps.logoutMethod === true){
-      console.log(this.nextProps);
-      alert("GOT EEM");
+
+  componentWillUpdate = (prevProps, prevState) => {
+
+    alert("in Auth");
+    if(prevProps.shouldLogout === true){
+      console.log(prevProps.shouldLogout);
+      this.setState({
+        shouldLogout: true
+      });
     }
   }
 

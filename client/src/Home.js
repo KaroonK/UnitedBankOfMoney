@@ -1,16 +1,15 @@
-import React, {Component, PropTypes} from 'react';
-import { render } from 'react-dom';
-import {Router, Route} from 'react-router';
-import axios from 'axios';
+import React, { Component } from 'react';
 
 class Home extends Component {
 
 
-    render(){
-      return(
-        <div></div>
-      )
-    }
+  render() {
+    return (
+      <div className ="card container-fluid ">
+      Home
+      </div>
+    );
+  }
 }
 
 

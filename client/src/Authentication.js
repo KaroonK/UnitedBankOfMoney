@@ -1,73 +1,65 @@
-import React from 'react';
 import Modal from 'react-modal';
-import Auth from './Auth';
+import React, {Component, PropTypes} from 'react';
+import { render } from 'react-dom';
+import {Router, Route} from 'react-router';
+import axios from 'axios';
+import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 
-const customStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
-  }
-};
-
-// Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
-Modal.setAppElement('#root')
-
-class App extends React.Component {
-  constructor(props) {
+class Authentication extends React.Component {
+  constructor(props){
     super(props);
-
     this.state = {
-      modalIsOpen: true,
-      isLoggedIn: false,
-      valueString : "HELLO",
-      shouldLogout: false
+      username: '',
+      password: ''
     };
-
-    this.openModal = this.openModal.bind(this);
-    this.afterOpenModal = this.afterOpenModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+    this.handleUserChange = this.handleUserChange.bind(this);
+    this.handlePassChange = this.handlePassChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
-  componentWillReceiveProps = (nextProps) => {
-    if(nextProps.logmeout === true){
-      this.setState({
-        shouldLogout: true
-      });
-    }
+  handleUserChange(event){
+    this.setState({username: event.target.value});
+  }
+  handlePassChange(event){
+    this.setState({password: event.target.value});
   }
 
-  openModal() {
-    this.setState({modalIsOpen: true});
-  }
 
-  afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    //this.subtitle.style.color = '#f00';
-  }
+   handleSubmit = event => {
 
-  closeModal() {
-    this.setState({modalIsOpen: false});
+    event.preventDefault();
+    var self= this;
+    axios.post('/users/login',{
+      userid: this.state.username,
+       pass: this.state.password
+    })
+    .then(function(response){
+      self.setState({loggedIn: response.data});
+      if(response.data==false){alert("Incorrect Username or Password. Please try again, Jabroni!")}
+      else{
+        alert("Logged In");
+      }
+    })
+    .catch(function (error) {
+     alert("Failed to log in.");
+   });
   }
 
   render() {
-    return (
-      <div>
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          onAfterOpen={this.afterOpenModal}
-          style={customStyles}
-          contentLabel="Login Modal"
-        >
-
-        <Auth logoutMethod={this.state.shouldLogout} parentMethod={this.closeModal} ref="auth"/>
-        </Modal>
-        <button onClick={this.handleLogout}>Logout</button>
-        <div>alkjhsdfl;jasdlkfj;alskdkfj;aaskljdf;alsdkjf;alsdjfl;kasjdfl;aksjdf;lkajsdf;lkajsdf;lkj {String(this.state.shouldLogout)}</div>
-      </div>
-    );
-  }
+    return(
+    <div>
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          UserID:
+          <input type="number" value={this.state.username} onChange={this.handleUserChange}/>
+        </label>
+        <label>
+          Password:
+          <input type="password" value={this.state.password} onChange={this.handlePassChange}/>
+        </label>
+        <button type="submit" className="btn btn-success btn-lg">Login</button>
+      </form>
+    </div>
+  );
 }
-export default App;
+}
+export default Authentication;
