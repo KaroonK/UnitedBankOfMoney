@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Link, Route, Switch, withRouter, Redirect } from 'react-router-dom';
+import { Link, Route, Switch, withRouter, Redirect, BrowserRouter} from 'react-router-dom';
+import createBrowserHistory from 'history/createBrowserHistory'
 import Home from './Home';
 import Test from './Test';
 import Loans from './Loans';
@@ -23,132 +24,136 @@ import colImg from './images/collect.png';
 import logOut from './images/logOut.png';
 import Authentication from './Authentication';
 
-  const isAuthenticated = true;
-  const SecretRoute = ({ component: Component, ...rest }) => (
-    <Route {...rest} render={(props) => (
-      isAuthenticated === true
-        ? <Component {...props} />
-        : <Redirect to='/authentication' />
-    )} />
-  );
 
   class App extends Component{
+    constructor(props){
+      super(props);
+    }
+    AuthService = {
+      isAuthenticated:false,
+      authentication(){
+        this.isAuthenticated=true
+      },
+      logout(){
+        this.isAuthenticated = false
+      }
+    }
+    SecretRoute = ({ component: Component, ...rest }) => (
+      <Route {...rest} render={(props) => (
+        this.AuthService.isAuthenticated === true
+          ? <Component {...props} />
+          // : <Redirect to='/authentication' />
+          :<Authentication logState={this.AuthService}/>
+      )} />
+    );
   render() {
-
+    var self=this;
     return (
       <div>
-      <Switch>
-        <Route path="/authentication" component={Authentication}/>
-        <SecretRoute exact path="/" component={Home}/>
-        <SecretRoute path="/test" component={Test}/>
-        <SecretRoute path="/clients" component={Clients}/>
-        <SecretRoute path="/accounts" component={Accounts}/>
-        <SecretRoute path="/employees" component={Employees}/>
-        <SecretRoute path="/branch" component={Branch}/>
-        <SecretRoute path="/loans" component={Loans}/>
-        <SecretRoute path="/investments" component={Investments}/>
-        <SecretRoute path="/collections" component={Collections}/>
-        </Switch>
-      </div>
-      //   <SideNav onSelect={(selected) => {
-      //       const url = '/' + selected;
-      //       if(selected == "logout"){
-      //         this.logOut();
-      //       } else {
-      //         this.props.history.push(url);
-      //       }
-      //     }
-      //   }
-      //   >
-      //   <SideNav.Toggle/>
-      //   <SideNav.Nav >
-      //     <NavItem eventKey="home">
-      //         <NavIcon>
-      //             <img src={homeImg} height="30" width="30" ></img>
-      //         </NavIcon>
-      //         <NavText>
-      //           Home
-      //           </NavText>
-      //     </NavItem>
-      //     <NavItem eventKey="clients">
-      //         <NavIcon>
-      //             <img src={clientsImg} height="30" width="30" ></img>
-      //         </NavIcon>
-      //         <NavText>
-      //           Clients
-      //         </NavText>
-      //     </NavItem>
-      //     <NavItem eventKey="accounts">
-      //         <NavIcon>
-      //             <img src={accImg} height="30" width="30" ></img>
-      //         </NavIcon>
-      //         <NavText>
-      //           Accounts
-      //           </NavText>
-      //     </NavItem>
-      //     <NavItem eventKey="employees">
-      //         <NavIcon>
-      //             <img src={empImg} height="30" width="30" ></img>
-      //         </NavIcon>
-      //         <NavText>
-      //           Employees
-      //           </NavText>
-      //     </NavItem>
-      //     <NavItem eventKey="branch">
-      //         <NavIcon>
-      //             <img src={branchImg} height="30" width="30" ></img>
-      //         </NavIcon>
-      //         <NavText>
-      //           Branch
-      //           </NavText>
-      //     </NavItem>
-      //     <NavItem eventKey="loans">
-      //         <NavIcon>
-      //             <img src={loansImg} height="30" width="30" ></img>
-      //         </NavIcon>
-      //         <NavText>
-      //           Loans
-      //           </NavText>
-      //     </NavItem>
-      //     <NavItem eventKey="investments">
-      //         <NavIcon>
-      //             <img src={insImg} height="30" width="30" ></img>
-      //         </NavIcon>
-      //         <NavText>
-      //           Investments
-      //           </NavText>
-      //     </NavItem>
-      //     <NavItem eventKey="collections">
-      //         <NavIcon>
-      //             <img src={colImg} height="30" width="30" ></img>
-      //         </NavIcon>
-      //         <NavText>
-      //           Collections
-      //           </NavText>
-      //     </NavItem>
-      //     <NavItem eventKey="logout" >
-      //         <NavIcon>
-      //           <img src={logOut} height="30" width="30" ></img>
-      //         </NavIcon>
-      //         <NavText>
-      //           Logout
-      //         </NavText>
-      //     </NavItem>
-      //     </SideNav.Nav>
-      //     </SideNav>
-      // // <Authentication logmeout={this.state.loggedIn}/>
-      // <Switch>
-      //   <ProtectedRoute
-      //     isAccessible
-      //     redirectToPath="/login"
-      //     path="/hello"
-      //     component={() => <p>Logged in</p>}/>
-      //     <Route
-      //       path="/login"/>
-      //
-      // </Switch>
 
+
+        <SideNav onSelect={(selected) => {
+            const url = "/" + selected;
+            if(selected == "logout"){
+              this.AuthService.logout(()=>this.props.history.push('/authentication'))
+              this.forceUpdate();
+            } else {
+              this.props.history.push(url);
+            }
+          }
+        }
+        >
+        <SideNav.Toggle/>
+        <SideNav.Nav >
+          <NavItem eventKey="home">
+              <NavIcon>
+                  <img src={homeImg} height="30" width="30" ></img>
+              </NavIcon>
+              <NavText>
+                Home
+                </NavText>
+          </NavItem>
+          <NavItem eventKey="clients">
+              <NavIcon>
+                  <img src={clientsImg} height="30" width="30" ></img>
+              </NavIcon>
+              <NavText>
+                Clients
+              </NavText>
+          </NavItem>
+          <NavItem eventKey="accounts">
+              <NavIcon>
+                  <img src={accImg} height="30" width="30" ></img>
+              </NavIcon>
+              <NavText>
+                Accounts
+                </NavText>
+          </NavItem>
+          <NavItem eventKey="employees">
+              <NavIcon>
+                  <img src={empImg} height="30" width="30" ></img>
+              </NavIcon>
+              <NavText>
+                Employees
+                </NavText>
+          </NavItem>
+          <NavItem eventKey="branch">
+              <NavIcon>
+                  <img src={branchImg} height="30" width="30" ></img>
+              </NavIcon>
+              <NavText>
+                Branch
+                </NavText>
+          </NavItem>
+          <NavItem eventKey="loans">
+              <NavIcon>
+                  <img src={loansImg} height="30" width="30" ></img>
+              </NavIcon>
+              <NavText>
+                Loans
+                </NavText>
+          </NavItem>
+          <NavItem eventKey="investments">
+              <NavIcon>
+                  <img src={insImg} height="30" width="30" ></img>
+              </NavIcon>
+              <NavText>
+                Investments
+                </NavText>
+          </NavItem>
+          <NavItem eventKey="collections">
+              <NavIcon>
+                  <img src={colImg} height="30" width="30" ></img>
+              </NavIcon>
+              <NavText>
+                Collections
+                </NavText>
+          </NavItem>
+          <NavItem eventKey="logout" >
+              <NavIcon>
+                <img src={logOut} height="30" width="30" ></img>
+              </NavIcon>
+              <NavText>
+                Logout
+              </NavText>
+          </NavItem>
+          </SideNav.Nav>
+          </SideNav>
+          <Switch>
+            <Route path="/authentication" component={Authentication}/>
+            <this.SecretRoute exact path="/" component={Home}/>
+            <this.SecretRoute path="/test" component={Test}/>
+            <this.SecretRoute path="/clients" component={Clients}/>
+            <this.SecretRoute path="/accounts" component={Accounts}/>
+            <this.SecretRoute path="/employees" component={Employees}/>
+            <this.SecretRoute path="/branch" component={Branch}/>
+            <this.SecretRoute path="/loans" component={Loans}/>
+            <this.SecretRoute path="/investments" component={Investments}/>
+            <this.SecretRoute path="/collections" component={Collections}/>
+            </Switch>
+        </div>
+      // <Authentication logmeout={this.state.loggedIn}/>
     );
   }
 }
-export default App;
+export default withRouter(App);

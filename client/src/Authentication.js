@@ -3,6 +3,7 @@ import React, {Component, PropTypes} from 'react';
 import { render } from 'react-dom';
 import {Router, Route} from 'react-router';
 import axios from 'axios';
+import App from './App';
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 
 class Authentication extends React.Component {
@@ -10,7 +11,8 @@ class Authentication extends React.Component {
     super(props);
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      isAuthenticated: false
     };
     this.handleUserChange = this.handleUserChange.bind(this);
     this.handlePassChange = this.handlePassChange.bind(this);
@@ -37,9 +39,12 @@ class Authentication extends React.Component {
       if(response.data==false){alert("Incorrect Username or Password. Please try again, Jabroni!")}
       else{
         alert("Logged In");
+        console.log(self.props);
+        self.props.logState.authentication();
       }
     })
     .catch(function (error) {
+      console.log(error);
      alert("Failed to log in.");
    });
   }
