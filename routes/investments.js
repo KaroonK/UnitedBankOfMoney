@@ -15,19 +15,13 @@ router.get('/viewInvestments', function(req, res, next) {
     })
   });
 
-<<<<<<< HEAD
-router.get('/viewPortfolioAdvisors',function(req, res, next){
-  connection.query("SELECT Portfolio_Advisor FROM Investments WHERE Portfolio_Advisor!='Self Advised'",function (err. restult, fields){
-=======
+
 router.get('/viewPortfolioAdvisors', function(req, res, next){
   connection.query("SELECT Portfolio_Advisor FROM Investments WHERE Portfolio_Advisor!='Self Advised'", function (err, result, fields){
->>>>>>> 4acd525a295dc0f44ddfecda3592b20a5a64181a
     if(err) throw err;
     res.send(JSON.stringify(result));
   })
 });
-<<<<<<< HEAD
-=======
 
   router.post('/checkNetWorth', function(req, res, next) {
     var userd = '\''+ req.body.netWorth + '\'';
@@ -38,7 +32,5 @@ router.get('/viewPortfolioAdvisors', function(req, res, next){
     res.send(result);
     })
   });
-
->>>>>>> 4acd525a295dc0f44ddfecda3592b20a5a64181a
 
 module.exports = router;
