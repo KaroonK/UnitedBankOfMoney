@@ -40,7 +40,7 @@ class Investments extends Component {
                 <h4>Show Investments</h4>
               </AccordionItemTitle>
               <AccordionItemBody>
-                <JsonTable className="table" rows={this.state.list.data} columns={"Button"}/>
+                <JsonTable className="table" rows={this.state.list.data}/>
               </AccordionItemBody>
           </AccordionItem>
           <AccordionItem>
