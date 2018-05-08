@@ -6,6 +6,7 @@ import {
     AccordionItemBody,
 } from 'react-accessible-accordion';
 import axios from 'axios';
+
 const JsonTable = require('ts-react-json-table');
 
 class Investments extends Component {
@@ -22,14 +23,11 @@ class Investments extends Component {
     var self = this;
     axios.get(' /investments/viewInvestments').then(function (result){
       self.setState({list:result});
-      console.log(self.state.list.data);
       }
     );
 
   }
-  showInvest(){
-    console.log(this.state.list.data);
-  }
+
 
   render() {
     var username = sessionStorage.getItem('username');

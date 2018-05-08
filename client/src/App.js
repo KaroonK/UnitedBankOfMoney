@@ -25,23 +25,26 @@ import colImg from './images/collect.png';
 import logOut from './images/logOut.png';
 import Authentication from './Authentication';
 
-  class App extends Component{
+//sessionStorage.getItem('loggedIn');
 
+  class App extends Component{
     constructor(props){
       super(props);
       this.state = {
         username: '',
-        isLoggedIn: false
+        isLogged: sessionStorage.getItem('isLogged')
       };
+      console.log(this.state);
+      console.log(sessionStorage);
     }
     AuthService = {
-      isAuthenticated:true,
+      isAuthenticated: Boolean(sessionStorage.getItem('isLogged')),
       authentication(){
         this.isAuthenticated=true;
       },
       logout(){
         this.isAuthenticated = false;
-        sessionStorage.removeItem('username');
+        sessionStorage.clear();
       }
     }
     SecretRoute = ({ component: Component, ...rest }) => (
@@ -54,6 +57,8 @@ import Authentication from './Authentication';
       )} />
     );
   render() {
+    console.log(sessionStorage.getItem('isLogged'));
+    alert(this.AuthService.isAuthenticated);
     var data = sessionStorage.getItem('username');
     var self=this;
     return (
@@ -64,6 +69,7 @@ import Authentication from './Authentication';
             if(selected == "logout"){
               this.AuthService.logout(()=>this.props.history.push('/authentication'))
               this.forceUpdate();
+              console.log(sessionStorage.getItem('isLogged'));
             } else {
               this.props.history.push(url);
             }

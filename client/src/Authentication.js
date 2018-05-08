@@ -42,7 +42,6 @@ class Authentication extends React.Component {
       if(response.data==false){alert("Incorrect Username or Password. Please try again, Jabroni!")}
       else{
         alert("Logged In");
-        self.forceUpdate();
         self.setState({formVisible: 'hidden'});
         sessionStorage.setItem('username', self.state.username);
         sessionStorage.setItem('isLogged', self.state.loggedIn);
