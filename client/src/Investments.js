@@ -68,8 +68,8 @@ class Investments extends Component {
       <div className ="card container-fluid ">
         <Accordion>
           <AccordionItem onClick={this.viewInvestments}>
-              <AccordionItemTitle >
-                <h4 >HELLO Investments</h4>
+              <AccordionItemTitle  >
+                <div className="center"><h4 >Show Investments</h4></div>
               </AccordionItemTitle>
               <AccordionItemBody>
                 <JsonTable className="table" rows={this.state.list.data}/>
@@ -92,7 +92,7 @@ class Investments extends Component {
           </AccordionItem>
           <AccordionItem onClick={this.viewPortfolioAdvisors} >
               <AccordionItemTitle>
-                <h4>View Portfolio Advisors </h4>
+                <h4 className="center">View Portfolio Advisors </h4>
               </AccordionItemTitle>
               <AccordionItemBody>
                 <div>
