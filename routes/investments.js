@@ -15,5 +15,11 @@ router.get('/viewInvestments', function(req, res, next) {
     })
   });
 
+router.get('/viewPortfolioAdvisors',function(req, res, next){
+  connection.query("SELECT Portfolio_Advisor FROM Investments WHERE Portfolio_Advisor!='Self Advised'",function (err. restult, fields){
+    if(err) throw err;
+    res.send(JSON.stringify(result));
+  })
+});
 
 module.exports = router;
