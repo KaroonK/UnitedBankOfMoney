@@ -69,7 +69,7 @@ class Investments extends Component {
         <Accordion>
           <AccordionItem onClick={this.viewInvestments}>
               <AccordionItemTitle >
-                <h4 >Hi Investments</h4>
+                <h4 >Show Investments</h4>
               </AccordionItemTitle>
               <AccordionItemBody>
                 <JsonTable className="table" rows={this.state.list.data}/>
