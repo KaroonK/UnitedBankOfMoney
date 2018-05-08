@@ -42,13 +42,35 @@ router.post('/employeePosition',function(req, res, next){
   })
 });
 
-// router.post('/openSafeBox',function(req, res, next){
-//   var boxid = req.body.boxId;
-//   var boxnum = req.body.boxNum;
-//   var branchnum = req.body.branchNum;
-//   var name = '\''+ req.body.name +'\'';
-//   var ssn = req.body.ssn;
-//   connection.query("INSERT INTO Safety_Deposit_Box VALUES")
-// })
+router.post('/addSafeBox', function(req, res, next){
+  var boxidPost = req.body.boxId;
+  var boxnumPost = req.body.boxNum;
+  var branchnumPost = req.body.branchNum;
+  var namePost = req.body.name;
+  var ssnPost = req.body.ssn;
+
+  connection.query("SELECT Box_Id FROM Safety_Deposit_Box WHERE Box_Id="+boxidPost, function(err, result, fields){
+  try{
+    if(result[0].Box_Id >= 1){
+      res.send(false);
+    }
+  }catch(err){
+    connection.query("INSERT INTO Safety_Deposit_Box VALUES(" + boxidPost+ "," + boxnumPost +"," + branchnumPost + ",\'" + namePost + "\'," + ssnPost+ ")",function(err, result, fields){
+      if (err) throw err;
+      res.send(true);
+    })
+  }
+  })
+});
+
+router.post('/deleteSafeBox', function(req, res, next){
+  var boxidDelete = req.body.boxIdDelete;
+  console.log(boxidDelete);
+  connection.query("DELETE FROM Safety_Deposit_Box WHERE Box_Id="+boxidDelete, function(err, result, fields){
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  })
+});
 
 module.exports = router;
