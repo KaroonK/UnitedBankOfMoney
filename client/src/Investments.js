@@ -80,7 +80,7 @@ class Investments extends Component {
                 <div className="center"><h4>Check Portfolio Net Worth </h4></div>
               </AccordionItemTitle>
               <AccordionItemBody>
-                <div><form onSubmit={this.handleNetWorth}  >
+                <div><form onSubmit={this.handleNetWorth} >
                   <label>
                     <input type="text" value={this.state.netWorth} onChange={this.handlenetWorthChange} placeholder="Full Name"/>
                   </label>
