@@ -58,7 +58,6 @@ import Authentication from './Authentication';
     );
   render() {
     console.log(sessionStorage.getItem('isLogged'));
-    alert(this.AuthService.isAuthenticated);
     var data = sessionStorage.getItem('username');
     var self=this;
     return (
