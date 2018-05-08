@@ -1,0 +1,12 @@
+.center {
+    text-align: center;
+}
+.AddForm {
+  width: 500px;
+  clear: both;
+}
+
+.AddForm input {
+  width: 100%;
+  clear: both;
+}

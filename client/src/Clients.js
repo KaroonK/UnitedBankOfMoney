@@ -8,24 +8,30 @@ import {
 import 'react-accessible-accordion/dist/fancy-example.css';
 import './styles/Clients.css';
 import axios from 'axios';
+import Dropdown from 'react-dropdown'
+import 'react-dropdown/style.css'
+
+const defaultOption = '';
 const JsonTable = require('ts-react-json-table');
 
-
-
-
 class Clients extends Component {
-
   constructor(props){
     super(props);
     this.state = {
       ssnNumber: '',
       fullName : '',
+      list: [],
+      clientBranchList: [],
       dateState: '',
       phNumber: '',
       address : '',
       dlNum : '',
       bNum : '',
+      selectedBranch: '',
+
     };
+
+    this.viewSpecificBranch = this.viewSpecificBranch.bind(this);
     this.handleSSNChange = this.handleSSNChange.bind(this);
     this.handleFullNameChange = this.handleFullNameChange.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
@@ -33,9 +39,19 @@ class Clients extends Component {
     this.handleAddressChange = this.handleAddressChange.bind(this);
     this.handleLicenseChange = this.handleLicenseChange.bind(this);
     this.handlebNumChange = this.handlebNumChange.bind(this);
+    this.viewClientsFromBranch = this.viewClientsFromBranch.bind(this);
+    this.selectedB = this.selectedB.bind(this);
+    this.updateAddress= this.updateAddress.bind(this);
   }
+    selectedB(event){
+      this.setState({selectedBranch: event.value});
+      this.viewClientsFromBranch(event);
+    }
     handleSSNChange(event){
       this.setState({ssnNumber: event.target.value});
+    }
+    handleClientBranchListChange(event){
+      this.setState({clientBranchList: event.value});
     }
     handleFullNameChange(event){
       this.setState({fullName:event.target.value});
@@ -56,6 +72,54 @@ class Clients extends Component {
       this.setState({bNum:event.target.value});
     }
 
+    viewClientsFromBranch(event){
+      var self = this;
+      axios.post('/clients/clientsFromBranch',{
+        braName: event.value
+      })
+      .then(function(response){
+        self.setState({clientBranchList : response});
+      })
+      .catch(function(error){
+        console.log(error);
+        alert("Failed to get clients from branch.");
+      })
+
+    }
+
+    viewSpecificBranch(){
+      var self = this;
+      axios.get('/clients/getBranches').then(function(result){
+        self.setState({list:result});
+        }
+      );
+
+    }
+    updateAddress = event => {
+
+      event.preventDefault();
+      var self= this;
+      axios.post('/clients/updateAddress',{
+        ssn: this.state.ssnNumber,
+        add: this.state.address,
+      })
+      .then(function(response){
+        if(response.data==true){
+          alert("Client's information has been updated!");
+        }else {
+          alert("Client's information was not updated!");
+          self.setState({
+            ssnNumber: '',
+            address : '',
+          });
+        }
+        })
+        .catch(function (error) {
+           console.log(error);
+       alert("Failed to log in.");
+     });
+     this.forceUpdate();
+    }
     handleSubmit = event => {
 
       event.preventDefault();
@@ -85,8 +149,8 @@ class Clients extends Component {
           });
         }
         })
-      .catch(function (error) {
-        console.log(error);
+        .catch(function (error) {
+           console.log(error);
        alert("Failed to log in.");
      });
      this.forceUpdate();
@@ -139,13 +203,60 @@ class Clients extends Component {
               </div>
               </AccordionItemBody>
           </AccordionItem>
-          <AccordionItem>
+          <AccordionItem onClick={this.viewSpecificBranch}>
               <AccordionItemTitle>
-                <h4 className="center">Complex title</h4>
+                <h4 className="center">View Clients of a particular branch</h4>
                 </AccordionItemTitle>
                 <AccordionItemBody>
-                  <p>Body content</p>
+                  <Dropdown options={this.state.list.data} onChange={this.selectedB} value={this.state.selectedBranch} placeholder="Select an option"/>
+                  <JsonTable rows={this.state.clientBranchList.data} className="table"/>
                   </AccordionItemBody>
+          </AccordionItem>
+          <AccordionItem>
+              <AccordionItemTitle>
+                <h4 className="center">Add Client to Database</h4>
+                <div>Client information cannot be empty</div>
+              </AccordionItemTitle>
+              <AccordionItemBody>
+              <div><form onSubmit ={this.updateAdress} >
+
+              <label>
+                <input type="number" value={this.state.ssnNumber} onChange={this.handleSSNChange} placeholder="12345678" max="999999999" required />
+              </label>
+              <br/>
+              <label>
+                  <input type="text" value={this.state.address} onChange={this.handleAddressChange} placeholder="Address" required/>
+                </label>
+              <br/>
+
+              <br/>
+              <button > Add </button>
+              </form>
+                <JsonTable className="table" />
+              </div>
+              </AccordionItemBody>
+          </AccordionItem>
+          <AccordionItem>
+              <AccordionItemTitle>
+                <h4 className="center">UPDATE Client Address</h4>
+              </AccordionItemTitle>
+              <AccordionItemBody>
+              <div><form onSubmit ={this.updateAddress} >
+
+              <label>
+                <input type="number" value={this.state.ssnNumber} onChange={this.handleSSNChange} placeholder="12345678" max="999999999" required />
+              </label>
+              <br/>
+              <label>
+                  <input type="text" value={this.state.address} onChange={this.handleAddressChange} placeholder="Address" required/>
+                </label>
+              <br/>
+
+              <br/>
+              <button > Update </button>
+              </form>
+              </div>
+              </AccordionItemBody>
           </AccordionItem>
         </Accordion>
       </div>

@@ -29,7 +29,44 @@ router.post('/addClient', function(req, res, next) {
       })
     }
     })
-
-
   });
+
+router.get('/getBranches', function(req, res,next){
+  var arr = [];
+  connection.query("SELECT Branch_name FROM Branch", function (err, result, fields){
+      if(err) throw err;
+      for(var i in result)
+        arr.push(result[i].Branch_name);
+      res.send(JSON.stringify(arr));
+  })
+});
+
+router.post('/clientsFromBranch', function(req,res,next){
+  var name = req.body.braName;
+  connection.query("SELECT Ssn,Name,Home_branch,Branch_name FROM Client p1 INNER JOIN Branch p2 ON p1.Home_branch=p2.Branch_num WHERE Branch_name="+"\'"+ name+"\'", function(err, result, fields){
+    if(err) throw err;
+    res.send(result);
+  });
+});
+
+router.post('/updateAddress', function(req,res,next){
+    var address = req.body.add;
+    var ssnNum = req.body.ssn;
+    console.log(ssnNum);
+    connection.query("SELECT EXISTS(Select* FROM CLIENT WHERE Ssn=" + ssnNum+")", function(err, result, fields){
+      if (err) throw err;
+      if(result>0){
+        Connection.query("UPDATE Client SET Address="+"\'"+ address+"\'"+" WHERE Ssn="+ssnNum,function(err,result, fields){
+          if(err) throw err;
+          res.send(true);
+        })}else{
+        res.send(false);
+      }
+    });
+
+});
+
+// router.post('/getClient', function(req, res, next){
+//   var branchName = req.body.bName;
+// })
 module.exports = router;
