@@ -16,9 +16,18 @@ class Investments extends Component {
       username: '',
       isLoggedIn: false,
       list: []
+      listPortfolioAdvisors:[]
     };
     this.viewInvestments = this.viewInvestments.bind(this);
+    this.viewPortfolioAdvisors = this.viewPortfolioAdvisors.bind(this);
   }
+  viewPortfolioAdvisors(){
+    var self = this;
+    axios.get('/investments/viewPortfolioAdvisors').then(function(result){
+      self.setState({listPortfolioAdvisors:result});
+    });
+  }
+
   viewInvestments(){
     var self = this;
     axios.get(' /investments/viewInvestments').then(function (result){
@@ -51,6 +60,16 @@ class Investments extends Component {
                 <AccordionItemBody>
                   <p>Body content</p>
                   </AccordionItemBody>
+          </AccordionItem>
+          <AccordionItem onClick={this.viewPortfolioAdvisors.data}>
+          <AccordionItemTitle>
+            <h4>View Portfolio Advisors</h4>
+            </AccordionItemTitle>
+            <AccordionItemBody>
+              <div>
+                  <JsonTable className="table" rows={this.state.listPortfolioAdvisors.data}/>
+              </div>
+              </AccordionItemBody>
           </AccordionItem>
         </Accordion>
       </div>
