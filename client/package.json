@@ -19,8 +19,10 @@
     "react-router-private-route": "0.0.3",
     "react-router-protected-route": "^1.0.0",
     "react-scripts": "^1.1.4",
+    "react-validation": "^3.0.7",
     "redux": "^4.0.0",
-    "ts-react-json-table": "^0.1.1"
+    "ts-react-json-table": "^0.1.1",
+    "validator": "^10.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
