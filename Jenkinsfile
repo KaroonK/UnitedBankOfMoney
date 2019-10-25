@@ -3,6 +3,7 @@ pipeline{
   triggers{
     pollSCM('H * * * *')
   }
+  
   stages{
     stage("TESTING BLUEOCEAN"){
       steps{
