@@ -1,7 +1,9 @@
 pipeline{
   stages{
     stage("TESTING BLUEOCEAN"){
-      echo "HELLO"
+      steps{
+        echo "HELLO"
+      }
     }
   }
 }
